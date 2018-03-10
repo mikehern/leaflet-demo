@@ -10,7 +10,7 @@ const zoomLevel = 11.5;
 const mapAttribution = '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>';
 
 const icon = L.icon({
-  iconUrl: 'http://www.allwhitebackground.com/images/1/Marker-3.jpg',
+  iconUrl: 'http://rs8.pbsrc.com/albums/a36/BeagleTsuin/48ae1b92129000136a7ca3902811b551.gif~c200',
 
   iconSize: [40, 40], // size of the icon
   iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
@@ -18,72 +18,51 @@ const icon = L.icon({
   popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
+const MyPopupMarker = ({ children, position }) => (
+  <Marker position={position} icon={icon}>
+    <Popup>
+      <span>{children}</span>
+    </Popup>
+  </Marker>
+);
 
-export class MapView extends Component {
+const MyMarkersList = ({ markers }) => {
+  const items = markers.map(({ key, position, children }) => (
+    <MyPopupMarker key={key} position={position} children={children} />
+  ));
+  return <div style={{ display: 'none' }}>{items}</div>
+}
 
-  constructor(){
+
+export default class MapView extends Component {
+
+  constructor() {
     super();
     this.state = {
-      hasLocation: false,
-      latlng: {
-        lat: 37.752,
-        lng: -122.4318
-      },
-      currentZoomLevel: 11.5
-    }
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleLocationFound = this.handleLocationFound.bind(this);
-  }
-
-  componentDidMount() {
-    console.log('after component mounted, state is: ', this.state);
-  }
-
-  handleClick() {
-    console.log('clicked! center is: ', this.clickInput.leafletElement.getCenter());
-    console.log('clicked! zoom is: ', this.clickInput.leafletElement.getZoom());
-    console.log('clicked! bounds is: ', this.clickInput.leafletElement.getBounds());
-    console.log('clicked! size is: ', this.clickInput.leafletElement.getSize());
-    console.log('clicked! pixelBounds is: ', this.clickInput.leafletElement.getPixelBounds());
-    console.log('clicked! pixelOrigin is: ', this.clickInput.leafletElement.getPixelOrigin());
-    console.log('clicked! panes is: ', this.clickInput.leafletElement.getPanes());
-    console.log('clicked! container is: ', this.clickInput.leafletElement.getContainer());
-  }
-
-  handleLocationFound(e){
-    this.setState({
-      hasLocation: true,
-      latlng: <e className="latlng"></e>,
-    })
+      lat: position[0],
+      lng: position[1],
+      zoom: zoomLevel
+    };
   }
 
   render() {
-    const marker = this.state.hasLocation ? (
-      <Marker position={this.state.latlng} icon={icon}>
-        <Popup>
-          <span>You have arrived.</span>
-        </Popup>
-      </Marker>
-    ) : null;
+    const center = [this.state.lat, this.state.lng];
+
+    const markers = [
+      {key: 'marker1', position: [37.73, -122.48], children: 'Its...'},
+      {key: 'marker2', position: [37.75, -122.42], children: '...party...'},
+      {key: 'marker3', position: [37.74, -122.44], children: '...time!'},
+    ];
 
     return(
-      <div>
-        <Map
-          center={this.state.latlng}
-          onClick={this.handleClick}
-          onLocationFound={this.handleLocationFound}
-          ref={(input) => {this.clickInput = input;}}
-          zoom={this.state.currentZoomLevel}
-          animate={true}
+      <Map center={center} zoom={this.state.zoom}>
+        <TileLayer
+          attribution={mapAttribution}
+          url={tileSet}
         >
-          <TileLayer
-            url={tileSet}
-            attribution={mapAttribution}
-          />
-          {marker}
-        </Map>
-      </div>
+        </TileLayer>
+        <MyMarkersList markers={markers} />
+      </Map>
     )
   }
 }
