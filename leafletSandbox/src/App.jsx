@@ -30,7 +30,7 @@ const MyMarkersList = ({ markers }) => {
   const items = markers.map(({ key, position, children }) => (
     <MyPopupMarker key={key} position={position} children={children} />
   ));
-  return <div style={{ display: 'none' }}>{items}</div>
+  return <div>{items}</div>
 }
 
 
