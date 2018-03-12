@@ -55,14 +55,17 @@ export default class MapView extends Component {
     ];
 
     return(
-      <Map center={center} zoom={this.state.zoom}>
-        <TileLayer
-          attribution={mapAttribution}
-          url={tileSet}
-        >
-        </TileLayer>
-        <MyMarkersList markers={markers} />
-      </Map>
+      <div>
+        <div>Zoom level is: {this.state.zoom}</div>
+        <Map center={center} zoom={this.state.zoom}>
+          <TileLayer
+            attribution={mapAttribution}
+            url={tileSet}
+          >
+          </TileLayer>
+          <MyMarkersList markers={markers} />
+        </Map>
+      </div>
     )
   }
 }
