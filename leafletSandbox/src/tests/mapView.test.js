@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView from '../App';
+import MapView from '../mapView';
 import { shallow } from 'enzyme';
 
 describe('Initial map loads with markers', () => {
@@ -20,12 +20,11 @@ describe('Initial map loads with markers', () => {
 
   it('Displays the zoom level above the map', () => {
     const wrapper = shallow(
-      <div>
-        <MapView>
-          <div>11.5</div>
-        </MapView>
-      </div>
+      
+      <MapView>
+        <div>Zoom level is 11.5</div>
+      </MapView>
     )
-    expect(wrapper.contains(<div>11.5</div>)).to.equal(true);
+    expect(wrapper.contains(<div>Zoom level is 11.5</div>)).toEqual(true);
   })
 })
