@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import CustomPopup from './customPopup.jsx';
 
 const key = require('../config');
 const tileSet = `https://api.mapbox.com/styles/v1/mikehern/cje36zhaq2kvw2smq8a8r2cjq/tiles/256/{z}/{x}/{y}?access_token=${key.MBKEY}`;
@@ -58,6 +59,7 @@ export default class MapView extends Component {
 
     return (
       <div>
+        <CustomPopup />
         <div>{`Zoom level is: ${this.state.zoom}`}</div>
         <Map center={center} zoom={this.state.zoom}>
           <TileLayer
