@@ -17,9 +17,12 @@ const icon = L.icon({
   popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
+const openTest = () => console.log('Got opened!');
+const closedTest = () => console.log('Got closed!');
+
 const MyPopupMarker = ({ children, position }) => (
   <Marker position={position} icon={icon}>
-    <Popup>
+    <Popup onOpen={openTest} onClose={closedTest}>
       <span>{children}</span>
     </Popup>
   </Marker>

@@ -8,4 +8,10 @@ describe('Initial map loads with markers', () => {
     const mapLat = wrapper.state().lat;
     expect(mapLat).toEqual(37.752);
   })
+
+  it('Contains a map', () => {
+    const wrapper = shallow(<MapView />);
+    const map = wrapper.find('Map');
+    expect(map.length).toEqual(1);
+  })
 })
