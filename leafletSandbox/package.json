@@ -34,6 +34,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-leaflet": "^1.8.2",
+    "react-modal": "^3.3.2",
     "reactjs-popup": "^1.0.4"
   }
 }
