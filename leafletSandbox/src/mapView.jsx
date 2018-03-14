@@ -18,20 +18,41 @@ const icon = L.icon({
   popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 
-const openTest = () => console.log('Got opened!');
+const openTest = (stuff) => console.log('Got opened! Includes ', stuff);
 const closedTest = () => console.log('Got closed!');
 
-const MyPopupMarker = ({ children, position }) => (
+const customStyle = {
+  backgroundColor: 'yellow',
+  color: 'green',
+  width: window.innerWidth,
+};
+
+
+const MyPopupMarker = ({ children, position, detail }) => (
   <Marker position={position} icon={icon}>
-    <Popup onOpen={openTest} onClose={closedTest}>
-      <span>{children}</span>
+    <Popup onOpen={() => openTest({detail})} onClose={closedTest} className='customPopup'>
+      <div style={customStyle}>
+        <span>{children}</span>
+        <br />
+        <CustomPopup />
+        <br />
+        <span>hours: {detail.hours}</span>
+        <br />
+        <span>wifi: {`${detail.hasWifi}`}</span>
+        <br />
+        <span>coffee: {detail.hasCoffee}</span>
+      </div>
     </Popup>
   </Marker>
 );
 
 const MyMarkersList = ({ markers }) => {
-  const items = markers.map(({ key, position, children }) => (
-    <MyPopupMarker key={key} position={position} children={children} />
+  const items = markers.map(({ key, position, children, detail }) => (
+    <MyPopupMarker key={key} 
+      position={position} 
+      children={children} 
+      detail={detail}
+    />
   ));
   return <div>{items}</div>
 }
@@ -48,20 +69,39 @@ export default class MapView extends Component {
     };
   }
 
+  clickHandler = () => {
+    console.log('hi')
+  }
+
   render() {
     const center = [this.state.lat, this.state.lng];
 
     const markers = [
-      { key: 'marker1', position: [37.73, -122.48], children: 'Its...' },
-      { key: 'marker2', position: [37.75, -122.42], children: '...party...' },
-      { key: 'marker3', position: [37.74, -122.44], children: '...time!' },
+      { key: 'marker1', position: [37.73, -122.48], children: 'Its...', detail: {
+          hours: '11 to 7',
+          hasWifi: true,
+          hasCoffee: false,
+        } 
+      },
+      { key: 'marker2', position: [37.75, -122.42], children: '...party...', detail: {
+          hours: '9 to 6',
+          hasWifi: false,
+          hasCoffee: true,
+        } 
+      },
+      { key: 'marker3', position: [37.74, -122.44], children: '...time!', detail: {
+          hours: '11 to 4',
+          hasWifi: false,
+          hasCoffee: false,
+        } 
+      },
     ];
 
     return (
       <div>
         <CustomPopup />
         <div>{`Zoom level is: ${this.state.zoom}`}</div>
-        <Map center={center} zoom={this.state.zoom}>
+        <Map center={center} zoom={this.state.zoom} >
           <TileLayer
             attribution={mapAttribution}
             url={tileSet}
