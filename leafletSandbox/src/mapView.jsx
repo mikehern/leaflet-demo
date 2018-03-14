@@ -1,29 +1,16 @@
 import React, { Component } from 'react';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer } from 'react-leaflet';
 import CustomPopup from './customPopup.jsx';
 import { tileSet, SFGeo, zoomLevel, mapAttribution, icon } from './mapconfig';
 import { markers } from './markerData';
 
 import ReactModal from 'react-modal';
-
-
-//TODO: keep testable popup scope in render
-const openTest = (stuff) => console.log('Got opened! Includes ', stuff);
-const closedTest = () => console.log('Got closed!');
-
-
-//TODO: move popup-wrapped marker to file
-const MyPopupMarker = ({ children, position, detail }) => (
-  <Marker position={position} icon={icon}>
-    <Popup onOpen={() => openTest({detail})} onClose={closedTest} className='customPopup'>
-    </Popup>
-  </Marker>
-);
+import PopupMarker from './popupMarker.jsx';
 
 //TODO: move marker list to file
 const MyMarkersList = ({ markers }) => {
   const items = markers.map(({ key, position, children, detail }) => (
-    <MyPopupMarker
+    <PopupMarker
       key={key} 
       position={position} 
       children={children} 
