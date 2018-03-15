@@ -3,7 +3,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { icon } from './mapconfig';
 
 
-function PopupMarker(props) {
+const PopupMarker = (props) => {
   const { children, position, detail } = props;
 
   const openTest = (stuff) => console.log('Got opened! Includes ', stuff);
